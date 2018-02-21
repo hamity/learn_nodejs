@@ -573,7 +573,7 @@ ejsでは```<%=hoge %>```といったように、```<%= %>```を用いてHTMLに
 </body>
 ```
 
-書くことができる。しかし、(当たり前だが)プログラム側で代入する値を決めなければならない。<br>
+書くことができる(head属性の中にも変数を用意することができる)。しかし、(当たり前だが)プログラム側で代入する値を決めなければならない。<br>
 それは、次のようにrenderメソッドを修正することで行うことができる
 
 ```
@@ -582,3 +582,50 @@ var content = ejs.render(index_page, {
       content:"内容",  
     });
 ```
+
+これにより、title変数には「タイトル」が、content変数には「内容」という文字が入ったHTMLが生成（レンダリング）される。
+
+## Stylesheetを適用する
+
+style.cssを作成し、その中にスタイル情報を書き、さらにindex.ejsに
+
+```
+    <link rel="stylesheet" href="./style.css" type="text/css">
+```
+
+を追加した。(style属性の部分は消しておく）
+
+試しにlocalhost:3000/style.cssにアクセスしてみる。
+
+<a href="https://gyazo.com/e55fcce33d5c179586e0de9a5cf6a241"><img src="https://i.gyazo.com/e55fcce33d5c179586e0de9a5cf6a241.png" alt="https://gyazo.com/e55fcce33d5c179586e0de9a5cf6a241" width="374"/></a>
+
+しかし、index.ejsの表示しかされない。
+
+実は、localhost:3000の後ろに何をつけてもlocalhost:3000/index.ejsが表示されるようになっている。
+
+というのも、app.js内ではindex.ejsのファイルを読み込み、writeメソッドで表示を行なっていたため。<br>
+全てのURIに対してindex.ejsが表示されていた。<br>
+
+そのため、URIによって表示する内容を変えるにはルーティングという処理を書く必要がある。
+
+## ルーティングの処理
+
+### URLオブジェクト
+
+URLの決定や構文解析のために、URLオブジェクトというものが用意されている。[参考: URI](https://nodejs.org/api/url.html#url_url)
+
+```
+const url = require('url')
+```
+
+でモジュールの読み込みができる。
+
+url.parseメソッドでURLデータをパース（解剖）し、返り値としてパースした値が代入されたオブジェクトが返される。<br>
+[返されるオブジェクトについての参照: Node.jsでURLをパースする](http://info-i.net/url-parse)
+
+```
+const url_parts = url.parse(request.rul)
+```
+
+あとはurl_partsの値によってswitch文で表示を切り替えれば良い
+
