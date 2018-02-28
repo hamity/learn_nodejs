@@ -614,7 +614,7 @@ style.cssを作成し、その中にスタイル情報を書き、さらにindex
 
 URLの決定や構文解析のために、URLオブジェクトというものが用意されている。[参考: URI](https://nodejs.org/api/url.html#url_url)
 
-```
+```js
 const url = require('url')
 ```
 
@@ -623,9 +623,35 @@ const url = require('url')
 url.parseメソッドでURLデータをパース（解剖）し、返り値としてパースした値が代入されたオブジェクトが返される。<br>
 [返されるオブジェクトについての参照: Node.jsでURLをパースする](http://info-i.net/url-parse)
 
-```
+```js
 const url_parts = url.parse(request.rul)
 ```
 
 あとはurl_partsの値によってswitch文で表示を切り替えれば良い
 
+## 他のページへの移動
+
+```html
+    <p><a href="/other">Other Pageに移動</a></p>
+```
+a属性のhrefタグの指定はURIのパスネームの部分を入力すればよい。<br>
+このリンクがクリックされるとapp.jsでhrefタグに書かれたURLがルーティング処理される
+
+## 2章まとめ
+
+- Nodejsの基本は "httpの用意", "サーバーの用意", "待ち受け"
+	- httpの用意: require()
+	- サーバーの用意: http.createServer
+	- 待ち受け: 用意したサーバーのオブジェクトをserverとするとserver.listen(ポート番号)
+
+- EJSの使い方
+	- fs.readFileSync()でEJSファイルを読み込み
+	- .ejsファイルをレンダリングすることでHTMLのソースに変換(ejs.render())
+	- そしてレンダリング後のソースを表示(response.write())
+	- .ejsファイルで変数を用意する(<%= hoge %>)
+		- レンダリング時に変数に代入したい値を指定する
+- ルーティング
+	- urlモジュールを使う
+	- pathnameが知りたい場合はurl.pathname
+		- その後パースしてあげることでパスを取得
+	- どのサイトを表示するか指定することが当たり前だが重要
