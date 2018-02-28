@@ -15,12 +15,17 @@ console.log('Server Start!')
 
 function getFromClient(request, response){
   // URLのルーティング
-  const url_parts = url.parse(request.url)
+  const url_parts = url.parse(request.url, true)
   switch (url_parts.pathname) {
     case '/':
+      let message = "これはIndexページです。"
+      const query = url_parts.query
+      if(query.msg != undefined){
+        message += "あなたは、「" + query.msg + "」と送りました"
+      }
       const content = ejs.render(index_page, {
-        title:"Indexページ",
-        content:"これはテンプレートを使ったサンプルページです!",
+        title: "Index",
+        content: message,
       })
       response.writeHead(200, {'Content-Type' : 'text/html'})
       response.write(content)
