@@ -12,7 +12,7 @@ var server = http.createServer(
 );
 server.listen(3000);
 ```
-でサーバーを立てることができる。
+でサーバーを立てることができる。
 
 ### コードを読んでいく
 
